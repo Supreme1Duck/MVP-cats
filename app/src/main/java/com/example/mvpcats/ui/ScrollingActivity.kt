@@ -1,5 +1,6 @@
 package com.example.mvpcats.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -22,16 +23,14 @@ class ScrollingActivity : AppCompatActivity(), MainContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityScrollingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         cats = CatsModel()
         setSupportActionBar(findViewById(R.id.toolbar))
         binding.recyclerView.catsRecyclerView.layoutManager = GridLayoutManager(this, 3)
         binding.toolbarLayout.title = title
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        binding.fab.setOnClickListener {
+            startActivity(Intent(this, FavouriteCatsActivity::class.java))
         }
         catsPresenter.onActivityCreated()
     }
