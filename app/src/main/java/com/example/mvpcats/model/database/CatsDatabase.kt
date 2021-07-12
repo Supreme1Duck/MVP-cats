@@ -11,7 +11,7 @@ abstract class CatsDatabase : RoomDatabase() {
     abstract fun catsDao(): CatsDao
 
     companion object {
-        var INSTANCE: CatsDatabase? = null
+        private var INSTANCE: CatsDatabase? = null
 
         fun getAppDataBase(context: Context): CatsDatabase? {
             if (INSTANCE == null) {

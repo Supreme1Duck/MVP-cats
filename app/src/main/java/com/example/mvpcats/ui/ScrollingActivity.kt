@@ -1,16 +1,12 @@
 package com.example.mvpcats.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.example.mvpcats.R
 import com.example.mvpcats.databinding.ActivityScrollingBinding
-import com.example.mvpcats.model.database.CatsDatabase
 import com.example.mvpcats.model.entity.CatsModel
 import com.example.mvpcats.presenter.CatsPresenter
 import com.example.mvpcats.ui.adapter.CatsRecyclerViewAdapter
@@ -21,7 +17,7 @@ class ScrollingActivity : AppCompatActivity(), MainContract.View {
     private lateinit var binding: ActivityScrollingBinding
     private lateinit var cats: CatsModel
     private val catsPresenter by lazy {
-        CatsPresenter(this)
+        CatsPresenter(this, application)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,16 +37,11 @@ class ScrollingActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_scrolling, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
@@ -63,6 +54,6 @@ class ScrollingActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun showCats(cats: CatsModel) {
-        binding.recyclerView.catsRecyclerView.adapter = CatsRecyclerViewAdapter(cats)
+        binding.recyclerView.catsRecyclerView.adapter = CatsRecyclerViewAdapter(cats, catsPresenter)
     }
 }

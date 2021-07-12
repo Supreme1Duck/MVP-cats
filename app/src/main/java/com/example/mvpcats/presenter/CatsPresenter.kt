@@ -1,21 +1,22 @@
 package com.example.mvpcats.presenter
 
-import android.util.Log
+import android.app.Application
+import com.example.mvpcats.model.database.Cats
 import com.example.mvpcats.model.entity.CatsModel
 import com.example.mvpcats.model.repository.CatsRepository
 import com.example.mvpcats.ui.MainContract
-import com.example.mvpcats.ui.ScrollingActivity
 import com.example.mvpcats.util.Constants
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class CatsPresenter(
-    scrollingActivity: ScrollingActivity
+    scrollingActivity: MainContract.View,
+    application: Application
 ) : MainContract.Presenter {
 
     private val catsView: MainContract.View = scrollingActivity
-    private val catsRepository = CatsRepository()
+    private val catsRepository = CatsRepository(application)
     private val disposable = CompositeDisposable()
     private var catsList = CatsModel()
 
@@ -31,11 +32,31 @@ class CatsPresenter(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
                     catsList = it
-                    Log.d("WEB_CALL", catsList[20].url)
                     catsView.showCats(catsList)
                 }
         )
         return catsList
+    }
+
+    override fun getFavouriteCats(): ArrayList<Cats> {
+        var cats = ArrayList<Cats>()
+        disposable.add(
+            catsRepository.getFavouriteCats()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    cats = it as ArrayList<Cats>
+                }
+        )
+        return cats
+    }
+
+    override fun insertCat(cat: Cats) {
+        disposable.add(
+            catsRepository.insertFavouriteCat(cat)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe {}
+        )
     }
 
     override fun onDestroy() {

@@ -1,24 +1,30 @@
 package com.example.mvpcats.model.repository
 
+import android.content.Context
 import com.example.mvpcats.model.api.CatsApi
 import com.example.mvpcats.model.database.Cats
 import com.example.mvpcats.model.database.CatsDatabase
 import com.example.mvpcats.model.entity.CatsModel
 import com.example.mvpcats.ui.MainContract
 import com.example.mvpcats.util.Constants
+import io.reactivex.Completable
+import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 
-class CatsRepository : MainContract.Repository {
+class CatsRepository(
+    context: Context
+) : MainContract.Repository {
 
-    private val catsDatabase = CatsDatabase.INSTANCE
+    private val catsDatabase = CatsDatabase.getAppDataBase(context)
     private val catsDao = catsDatabase?.catsDao()
 
-    fun getFavouriteCats(): ArrayList<Cats> {
+    override fun getFavouriteCats(): Observable<List<Cats>> {
         return catsDao?.getFavoritesCats()!!
     }
 
-    fun insertFavouriteCat(url: String){
-        catsDao?.insertCatsToFavourites(url)
+    override fun insertFavouriteCat(cat: Cats) : Completable {
+        return catsDao?.insertCatsToFavourites(cat)!!
     }
 
     override fun loadCats(
