@@ -11,9 +11,8 @@ import com.example.mvpcats.databinding.ActivityScrollingBinding
 import com.example.mvpcats.model.entity.CatsModel
 import com.example.mvpcats.presenter.CatsPresenter
 import com.example.mvpcats.ui.adapter.CatsRecyclerViewAdapter
-import com.google.android.material.snackbar.Snackbar
 
-class ScrollingActivity : AppCompatActivity(), MainContract.View {
+class ScrollingActivity : AppCompatActivity(), MainContract.CatsView {
 
     private lateinit var binding: ActivityScrollingBinding
     private lateinit var cats: CatsModel
@@ -30,7 +29,7 @@ class ScrollingActivity : AppCompatActivity(), MainContract.View {
         binding.recyclerView.catsRecyclerView.layoutManager = GridLayoutManager(this, 3)
         binding.toolbarLayout.title = title
         binding.fab.setOnClickListener {
-            startActivity(Intent(this, FavouriteCatsActivity::class.java))
+            startActivity(Intent(this, FavouriteCatsCatsActivity::class.java))
         }
         catsPresenter.onActivityCreated()
     }

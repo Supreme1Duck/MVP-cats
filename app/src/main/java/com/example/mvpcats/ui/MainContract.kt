@@ -8,8 +8,16 @@ import io.reactivex.Single
 
 class MainContract {
 
-    interface View {
-        fun showCats(cats: CatsModel)
+    interface CatsView : MarkerView<CatsModel> {
+        override fun showCats(t: CatsModel)
+    }
+
+    interface FavouriteCatsView : MarkerView<List<Cats>> {
+        override fun showCats(t: List<Cats>)
+    }
+
+    interface MarkerView<T>{
+        fun showCats(t : T)
     }
 
     interface Presenter {
@@ -28,7 +36,7 @@ class MainContract {
             page: Int
         ): Single<CatsModel>
 
-        fun insertFavouriteCat(cat: Cats) : Completable
+        fun insertFavouriteCat(cat: Cats): Completable
 
         fun getFavouriteCats(): Observable<List<Cats>>
     }

@@ -11,11 +11,11 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class CatsPresenter(
-    scrollingActivity: MainContract.View,
+    activity: MainContract.MarkerView,
     application: Application
 ) : MainContract.Presenter {
 
-    private val catsView: MainContract.View = scrollingActivity
+    private val catsCatsView: MainContract.MarkerView = activity
     private val catsRepository = CatsRepository(application)
     private val disposable = CompositeDisposable()
     private var catsList = CatsModel()
@@ -32,7 +32,7 @@ class CatsPresenter(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
                     catsList = it
-                    catsView.showCats(catsList)
+                    catsCatsView.showCats(catsList)
                 }
         )
         return catsList
@@ -43,6 +43,7 @@ class CatsPresenter(
         disposable.add(
             catsRepository.getFavouriteCats()
                 .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe {
                     cats = it as ArrayList<Cats>
                 }
