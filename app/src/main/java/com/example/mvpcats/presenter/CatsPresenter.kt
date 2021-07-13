@@ -1,6 +1,7 @@
 package com.example.mvpcats.presenter
 
 import android.app.Application
+import android.util.Log
 import com.example.mvpcats.model.database.Cats
 import com.example.mvpcats.model.entity.CatsModel
 import com.example.mvpcats.model.repository.CatsRepository
@@ -10,12 +11,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class CatsPresenter(
-    activity: MainContract.MarkerView,
+@Suppress("UNCHECKED_CAST")
+class CatsPresenter<T>(
+    activity: MainContract.MarkerView<T>,
     application: Application
 ) : MainContract.Presenter {
 
-    private val catsCatsView: MainContract.MarkerView = activity
+    private val catsView: MainContract.MarkerView<T> = activity
     private val catsRepository = CatsRepository(application)
     private val disposable = CompositeDisposable()
     private var catsList = CatsModel()
@@ -32,23 +34,32 @@ class CatsPresenter(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
                     catsList = it
-                    catsCatsView.showCats(catsList)
+                    catsView.showCats(catsList as T)
                 }
         )
         return catsList
     }
 
-    override fun getFavouriteCats(): ArrayList<Cats> {
-        var cats = ArrayList<Cats>()
+    override fun getFavouriteCats(): Set<Cats> {
+        var cats = HashSet<Cats>()
         disposable.add(
             catsRepository.getFavouriteCats()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe {
-                    cats = it as ArrayList<Cats>
+                    cats = HashSet(it)
+                    catsView.showCats(mapperCatsToString(cats) as T)
                 }
         )
         return cats
+    }
+
+    fun mapperCatsToString(hashSet: HashSet<Cats>): HashSet<String>{
+        val mappedSet = HashSet<String>()
+        hashSet.forEach{
+            mappedSet.add(it.url)
+        }
+        return mappedSet
     }
 
     override fun insertCat(cat: Cats) {

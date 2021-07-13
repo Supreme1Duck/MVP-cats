@@ -29,7 +29,8 @@ class ScrollingActivity : AppCompatActivity(), MainContract.CatsView {
         binding.recyclerView.catsRecyclerView.layoutManager = GridLayoutManager(this, 3)
         binding.toolbarLayout.title = title
         binding.fab.setOnClickListener {
-            startActivity(Intent(this, FavouriteCatsCatsActivity::class.java))
+            val intent = Intent(this, FavouriteCatsActivity::class.java)
+            startActivity(intent)
         }
         catsPresenter.onActivityCreated()
     }

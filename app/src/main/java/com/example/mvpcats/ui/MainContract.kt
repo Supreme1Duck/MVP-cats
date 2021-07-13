@@ -12,8 +12,8 @@ class MainContract {
         override fun showCats(t: CatsModel)
     }
 
-    interface FavouriteCatsView : MarkerView<List<Cats>> {
-        override fun showCats(t: List<Cats>)
+    interface FavouriteCatsView : MarkerView<HashSet<String>> {
+        override fun showCats(t: HashSet<String>)
     }
 
     interface MarkerView<T>{
@@ -23,7 +23,7 @@ class MainContract {
     interface Presenter {
         fun onActivityCreated(): CatsModel
         fun onDestroy()
-        fun getFavouriteCats(): List<Cats>
+        fun getFavouriteCats(): Set<Cats>
         fun insertCat(cat: Cats)
     }
 
