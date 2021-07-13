@@ -11,6 +11,7 @@ import com.example.mvpcats.databinding.ActivityScrollingBinding
 import com.example.mvpcats.model.entity.CatsModel
 import com.example.mvpcats.presenter.CatsPresenter
 import com.example.mvpcats.ui.adapter.CatsRecyclerViewAdapter
+import com.google.android.material.snackbar.Snackbar
 
 class ScrollingActivity : AppCompatActivity(), MainContract.CatsView {
 
@@ -32,7 +33,13 @@ class ScrollingActivity : AppCompatActivity(), MainContract.CatsView {
             val intent = Intent(this, FavouriteCatsActivity::class.java)
             startActivity(intent)
         }
-        catsPresenter.onActivityCreated()
+        binding.fab1.setOnClickListener {
+            catsPresenter.getCats()
+            Snackbar.make(it, "New pictures added!", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+        binding.recyclerView.catsRecyclerView.adapter = CatsRecyclerViewAdapter(cats, catsPresenter)
+        catsPresenter.getCats()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -52,7 +59,8 @@ class ScrollingActivity : AppCompatActivity(), MainContract.CatsView {
         catsPresenter.onDestroy()
     }
 
-    override fun showCats(cats: CatsModel) {
-        binding.recyclerView.catsRecyclerView.adapter = CatsRecyclerViewAdapter(cats, catsPresenter)
+    override fun showCats(t: CatsModel) {
+        cats.addAll(t)
+        binding.recyclerView.catsRecyclerView.adapter!!.notifyDataSetChanged()
     }
 }

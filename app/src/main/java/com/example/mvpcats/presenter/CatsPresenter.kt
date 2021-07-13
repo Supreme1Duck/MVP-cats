@@ -1,7 +1,6 @@
 package com.example.mvpcats.presenter
 
 import android.app.Application
-import android.util.Log
 import com.example.mvpcats.model.database.Cats
 import com.example.mvpcats.model.entity.CatsModel
 import com.example.mvpcats.model.repository.CatsRepository
@@ -21,15 +20,16 @@ class CatsPresenter<T>(
     private val catsRepository = CatsRepository(application)
     private val disposable = CompositeDisposable()
     private var catsList = CatsModel()
+    private var page = 0
 
-    override fun onActivityCreated(): CatsModel {
+    fun loadCats(): CatsModel {
         disposable.add(
             catsRepository.loadCats(
                 format = Constants.FORMAT,
                 order = Constants.ORDER_ASC,
                 size = Constants.SIZE_FULL,
                 limit = Constants.LIMIT_MAX,
-                page = Constants.PAGE_MIN
+                page
             ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
@@ -38,6 +38,11 @@ class CatsPresenter<T>(
                 }
         )
         return catsList
+    }
+
+    override fun getCats(): CatsModel {
+        page += 1
+        return loadCats()
     }
 
     override fun getFavouriteCats(): Set<Cats> {
@@ -54,9 +59,9 @@ class CatsPresenter<T>(
         return cats
     }
 
-    fun mapperCatsToString(hashSet: HashSet<Cats>): HashSet<String>{
+    fun mapperCatsToString(hashSet: HashSet<Cats>): HashSet<String> {
         val mappedSet = HashSet<String>()
-        hashSet.forEach{
+        hashSet.forEach {
             mappedSet.add(it.url)
         }
         return mappedSet

@@ -24,7 +24,11 @@ class CatsRecyclerViewAdapter(
 
     private lateinit var context: Context
 
-    class CatsViewHolder(itemView: View, var catsPresenter: MainContract.Presenter, var catsList: CatsModel) :
+    class CatsViewHolder(
+        itemView: View,
+        var catsPresenter: MainContract.Presenter,
+        var catsList: CatsModel
+    ) :
         RecyclerView.ViewHolder(itemView), View.OnClickListener, PopupMenu.OnMenuItemClickListener {
         var imageView: ImageView = itemView.findViewById(R.id.catsImageView)
 
