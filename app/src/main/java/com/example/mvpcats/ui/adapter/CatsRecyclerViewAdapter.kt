@@ -1,7 +1,9 @@
 package com.example.mvpcats.ui.adapter
 
 import android.content.Context
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -44,7 +46,11 @@ class CatsRecyclerViewAdapter(
         }
 
         override fun onMenuItemClick(item: MenuItem?): Boolean {
-            catsPresenter.insertCat(Cats(catsList[adapterPosition].url))
+            if (item!!.itemId == R.id.action_settings)
+                catsPresenter.insertCat(Cats(catsList[adapterPosition].url))
+            if (item.itemId == R.id.action_download) {
+                catsPresenter.downloadImage(imageView.drawable as BitmapDrawable)
+            }
             return true
         }
 

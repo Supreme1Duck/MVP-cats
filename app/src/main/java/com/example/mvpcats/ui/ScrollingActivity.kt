@@ -2,8 +2,6 @@ package com.example.mvpcats.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mvpcats.R
@@ -40,18 +38,6 @@ class ScrollingActivity : AppCompatActivity(), MainContract.CatsView {
         }
         binding.recyclerView.catsRecyclerView.adapter = CatsRecyclerViewAdapter(cats, catsPresenter)
         catsPresenter.getCats()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_scrolling, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onDestroy() {

@@ -1,5 +1,6 @@
 package com.example.mvpcats.ui
 
+import android.graphics.drawable.BitmapDrawable
 import com.example.mvpcats.model.database.Cats
 import com.example.mvpcats.model.entity.CatsModel
 import io.reactivex.Completable
@@ -25,6 +26,7 @@ class MainContract {
         fun onDestroy()
         fun getFavouriteCats(): Set<Cats>
         fun insertCat(cat: Cats)
+        fun downloadImage(bitmapDrawable: BitmapDrawable)
     }
 
     interface Repository {
