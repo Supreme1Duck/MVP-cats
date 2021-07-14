@@ -4,29 +4,25 @@ import android.app.Application
 import com.example.mvpcats.di.component.ApplicationComponent
 import com.example.mvpcats.di.component.DaggerApplicationComponent
 import com.example.mvpcats.di.module.ApplicationModule
-
+import com.example.mvpcats.di.module.DatabaseModule
+import com.example.mvpcats.di.module.FavouriteCatsActivityModule
+import com.example.mvpcats.di.module.ScrollingActivityModule
 
 class CatsApplication : Application() {
 
-    lateinit var component: ApplicationComponent
+    companion object{
+        lateinit var applicationComponent: ApplicationComponent
+    }
 
     override fun onCreate() {
         super.onCreate()
-
-        instance = this
-    }
-
-    fun setup() {
-        component = DaggerApplicationComponent.builder()
-            .applicationModule(ApplicationModule(this)).build()
-        component.inject(this)
-    }
-
-    fun getApplicationComponent(): ApplicationComponent {
-        return component
-    }
-
-    companion object {
-        lateinit var instance: CatsApplication private set
+        applicationComponent = DaggerApplicationComponent
+            .builder()
+            .applicationModule(ApplicationModule(this))
+            .databaseModule(DatabaseModule(this))
+            .scrollingActivityModule(ScrollingActivityModule())
+            .favouriteCatsActivityModule(FavouriteCatsActivityModule())
+            .build()
+        applicationComponent.inject(this)
     }
 }

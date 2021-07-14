@@ -10,11 +10,12 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mvpcats.R
+import com.example.mvpcats.presenter.FavouriteCatsPresenter
 import com.example.mvpcats.ui.MainContract
 
 class CatsFavouriteRecyclerViewAdapter(
     private var catsList: HashSet<String>,
-    private var catsPresenter: MainContract.Presenter,
+    private var catsPresenter: FavouriteCatsPresenter,
 ) : RecyclerView.Adapter<CatsFavouriteRecyclerViewAdapter.CatsViewHolder>() {
 
     private lateinit var context: Context

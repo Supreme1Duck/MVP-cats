@@ -24,9 +24,14 @@ class MainContract {
     interface Presenter {
         fun getCats(): CatsModel
         fun onDestroy()
-        fun getFavouriteCats(): Set<Cats>
         fun insertCat(cat: Cats)
         fun downloadImage(bitmapDrawable: BitmapDrawable)
+    }
+
+    interface FavouriteCatsPresenter {
+        fun getFavouriteCats(): Set<Cats>
+        fun onDestroy()
+        fun mapperCatsToString(hashSet: HashSet<Cats>): HashSet<String>
     }
 
     interface Repository {
