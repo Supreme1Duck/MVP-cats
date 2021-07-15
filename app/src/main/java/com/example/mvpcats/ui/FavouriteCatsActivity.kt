@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.mvpcats.CatsApplication
 import com.example.mvpcats.databinding.FavouriteCatsActivityBinding
 import com.example.mvpcats.model.database.Cats
 import com.example.mvpcats.model.database.CatsDatabase
@@ -20,6 +21,7 @@ class FavouriteCatsActivity : AppCompatActivity(), MainContract.FavouriteCatsVie
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        CatsApplication.applicationComponent.inject(this)
         binding = FavouriteCatsActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         catsPresenter.getFavouriteCats()

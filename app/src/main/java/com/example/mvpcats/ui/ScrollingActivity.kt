@@ -1,14 +1,12 @@
 package com.example.mvpcats.ui
 
-import android.app.Application
-import android.content.Intent
+ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mvpcats.CatsApplication
 import com.example.mvpcats.R
 import com.example.mvpcats.databinding.ActivityScrollingBinding
-import com.example.mvpcats.di.component.ApplicationComponent
 import com.example.mvpcats.model.entity.CatsModel
 import com.example.mvpcats.presenter.CatsPresenter
 import com.example.mvpcats.ui.adapter.CatsRecyclerViewAdapter
